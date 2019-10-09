@@ -1,0 +1,47 @@
+---
+# Hardening steps
+- name: SSH - Disallow root SSH access
+  lineinfile:
+    dest: /etc/ssh/sshd_config 
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify: Restart ssh
+
+- name: SSH - Disallow empty password
+  lineinfile:
+    dest: /etc/ssh/sshd_config 
+    regexp: "^PermitEmptyPasswords" 
+    line: "PermitEmptyPasswords no"
+    state: present
+  notify: Restart ssh
+  
+- name: SSH - Listening port from 22 to 19922
+  lineinfile:
+    dest: /etc/ssh/sshd_config 
+    regexp: "^Port 22" 
+    line: "Port 19922"
+    state: present
+  notify: Restart ssh
+
+# Firewall - Basic rules
+- name: Firewall - Allow SSH
+  become: yes
+  shell: |
+    ufw allow 19922/tcp
+    ufw enable
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Firewall - Activate
+  become: yes
+  shell: |
+    ufw enable
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+# Custom sudoers settings
+- name: SUDOERS - Add INSEAD operations Admins
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "#includedir /etc/sudoers.d"
+    line: "%GD_IT_Operations_Centralized	ALL=(ALL) NOPASSWD: ALL"
+    state: present 

@@ -1,0 +1,18 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  vars_prompt:
+    - name: username
+      prompt: " Please enter username"
+      private: no
+
+    - name: hashed_password
+      prompt: " Please enter passowrd"
+      private: yes 
+  roles:
+    - {role: update}
+    - {role: install-minimal-packages}
+    - {role: create-new-user}
+    - {role: basic-server-hardening}
+    - {role: vimrc-server-flavor}
+    - {role: pip}

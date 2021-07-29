@@ -34,6 +34,12 @@
     ufw allow proto tcp from 10.43.2.72 to any port 19922
     ufw allow proto tcp from 10.43.2.73 to any port 19922
     ufw allow proto tcp from 10.143.0.71 to any port 19922
+    ufw allow proto tcp from 10.43.2.39 to any port 80
+    ufw allow proto tcp from 10.43.2.71 to any port 80
+    ufw allow proto tcp from 10.143.0.71 to any port 80
+    ufw allow proto tcp from 10.43.2.39 to any port 443
+    ufw allow proto tcp from 10.43.2.71 to any port 443
+    ufw allow proto tcp from 10.143.0.71 to any port 443
     ufw enable
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 

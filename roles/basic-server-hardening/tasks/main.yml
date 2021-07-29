@@ -29,6 +29,7 @@
   become: yes
   shell: |
     ufw allow 19922/tcp
+    ufw allow proto tcp from 10.43.2.71 to any port 19922
     ufw enable
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
